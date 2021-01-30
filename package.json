@@ -1,0 +1,35 @@
+{
+  "name": "github-interaction-worker",
+  "version": "1.0.0",
+  "description": "CF Worker for a Discord interaction to query GitHub",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "NODE_ENV=development npm run build",
+    "format": "prettier --write '**/*.{ts,js,css,json,md}'",
+    "transpile": "tsc --project ./test"
+  },
+  "author": "almostSouji",
+  "license": "",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^2.0.0",
+    "@types/luxon": "^1.25.1",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.18.0",
+    "eslint-config-marine": "^8.1.0",
+    "rimraf": "^3.0.2",
+    "service-worker-mock": "^2.0.5",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "discord-interactions": "^1.3.3",
+    "luxon": "^1.25.0"
+  },
+  "eslintConfig": {
+    "extends": "marine/node"
+  }
+}

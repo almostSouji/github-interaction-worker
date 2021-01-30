@@ -1,0 +1,12 @@
+export const DATE_FORMAT_WITH_SECONDS = 'yyyy/LL/dd HH:mm:ss';
+export const DATE_FORMAT_WITHOUT_SECONDS = 'yyyy/LL/dd HH:mm';
+export const DATE_FORMAT_DATE = 'yyyy/LL/dd';
+export const GITHUB_BASE_URL = 'https://api.github.com/graphql';
+export const GITHUB_EMOJI_PR_OPEN = '<:pr_open:803281518457913355>';
+export const GITHUB_EMOJI_PR_CLOSED = '<:pr_closed:803281528032591933>';
+export const GITHUB_EMOJI_PR_MERGED = '<:pr_merge:803281579882315846>';
+export const GITHUB_EMOJI_PR_DRAFT = ' <:pr_draft:803281552027942932>';
+export const GITHUB_EMOJI_ISSUE_OPEN = '<:issue_open:803281455685566475>';
+export const GITHUB_EMOJI_ISSUE_CLOSED = '<:issue_closed:803281465307562014>';
+export const GITHUB_EMOJI_COMMIT = '<:commit:803281587625263144>';
+export const FAIL_PREFIX = '\`❌ Error\`';
