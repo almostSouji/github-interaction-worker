@@ -187,7 +187,7 @@ export async function issueInfo(owner: string, repository: string, expression: s
 		const installable = Reflect.has(InstallableState, resultState);
 
 		if (isPR(issue) && installable) {
-			parts.push(`⭳ \`npm i ${issue.headRepository.nameWithOwner}#${issue.headRef?.name ?? 'unknown'}\``);
+			parts.push(`\`📥\` \`npm i ${issue.headRepository.nameWithOwner}#${issue.headRef?.name ?? 'unknown'}\``);
 		}
 
 		parts.push(`${issue.title}`);
