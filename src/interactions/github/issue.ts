@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 
 import { DateTime } from 'luxon';
 import { DATE_FORMAT_WITHOUT_SECONDS, GITHUB_BASE_URL, GITHUB_EMOJI_ISSUE_CLOSED, GITHUB_EMOJI_ISSUE_OPEN, GITHUB_EMOJI_PR_CLOSED, GITHUB_EMOJI_PR_DRAFT, GITHUB_EMOJI_PR_MERGED, GITHUB_EMOJI_PR_OPEN, FAIL_PREFIX } from '../../Constants';
 import { GitHubAPIResult, GitHubReviewDecision, isPR } from '../../interfaces/GitHub';
 
 declare let GITHUB_TOKEN: string;
+
+/* eslint-disable @typescript-eslint/naming-convention */
 
 enum ResultStatePR {
 	OPEN = 'OPEN',
@@ -29,6 +30,8 @@ const Timestamps = {
 	MERGED: 'mergedAt',
 	DRAFT: 'publishedAt'
 } as const;
+
+/* eslint-enable @typescript-eslint/naming-convention */
 
 type TimestampsWithoutMerged = Omit<typeof Timestamps, 'MERGED'>;
 
@@ -109,7 +112,9 @@ export async function issueInfo(owner: string, repository: string, expression: s
 		const res: GitHubAPIResult = await fetch(GITHUB_BASE_URL, {
 			method: 'POST',
 			headers: {
+				// eslint-disable-next-line @typescript-eslint/naming-convention
 				'Authorization': `Bearer ${GITHUB_TOKEN}`,
+				// eslint-disable-next-line @typescript-eslint/naming-convention
 				'User-Agent': 'CF Worker'
 			},
 			body: JSON.stringify({ query })
@@ -119,7 +124,9 @@ export async function issueInfo(owner: string, repository: string, expression: s
 			return new Response(JSON.stringify({
 				data: {
 					content: `${FAIL_PREFIX} GitHub fetching unsuccessful.\nArguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``,
-					flags: 64
+					flags: 64,
+					// eslint-disable-next-line @typescript-eslint/naming-convention
+					allowed_mentions: { parse: [] }
 				},
 				type: 3
 			}));
@@ -130,6 +137,8 @@ export async function issueInfo(owner: string, repository: string, expression: s
 			return new Response(JSON.stringify({
 				data: {
 					content: `${FAIL_PREFIX} Could not find issue or PR \`#${expression}\` on the repository \`${owner}/${repository}\`.`,
+					// eslint-disable-next-line @typescript-eslint/naming-convention
+					allowed_mentions: { parse: [] },
 					flags: 64
 				},
 				type: 3
@@ -175,15 +184,15 @@ export async function issueInfo(owner: string, repository: string, expression: s
 
 		const relevantTime = DateTime.fromMillis(new Date(isPR(issue) ? issue[timestampProperty]! : issue[timestampProperty as TimestampsWithoutMergedKey]!).getTime());
 
-		const decision = isPR(issue)
+		const decision = isPR(issue) && !issue.merged && !issue.closed
 			? issue.reviewDecision === GitHubReviewDecision['CHANGES_REQUESTED']
-				? 'changes requested'
+				? '**(changes requested)**'
 				: issue.reviewDecision === GitHubReviewDecision['APPROVED']
-					? 'approved'
-					: 'review required'
+					? '**(approved)**'
+					: '**(review required)**'
 			: '';
 
-		const parts = [`> ${emoji} [\`#${issue.number}\`](<${issue.url}>) *by [${issue.author.login}](<${issue.author.url}>)* ${timestampState} at \`${relevantTime.toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\` ${isPR(issue) ? `**(${decision})**` : ''}`];
+		const parts = [`> ${emoji} [\`#${issue.number}\`](<${issue.url}>) *by [${issue.author.login}](<${issue.author.url}>)* ${timestampState} at \`${relevantTime.toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\` ${isPR(issue) ? decision : ''}`];
 		const installable = Reflect.has(InstallableState, resultState);
 
 		parts.push(`> ${issue.title}`);
@@ -194,7 +203,9 @@ export async function issueInfo(owner: string, repository: string, expression: s
 
 		return new Response(JSON.stringify({
 			data: {
-				content: parts.join('\n')
+				content: parts.join('\n'),
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				allowed_mentions: { parse: [] }
 			},
 			type: 4
 		}));
@@ -202,7 +213,9 @@ export async function issueInfo(owner: string, repository: string, expression: s
 		return new Response(JSON.stringify({
 			data: {
 				content: `${FAIL_PREFIX} Unable to fetch GitHub information, try again later!`,
-				flags: 64
+				flags: 64,
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				allowed_mentions: { parse: [] }
 			},
 			type: 3
 		}));

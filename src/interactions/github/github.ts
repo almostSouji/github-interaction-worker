@@ -13,7 +13,9 @@ export async function githubInfo(owner: string, repository: string, expression: 
 		return new Response(JSON.stringify({
 			data: {
 				content: `${FAIL_PREFIX} Invalid repository owner name: \`${owner}\`.`,
-				flags: 64
+				flags: 64,
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				allowed_mentions: { parse: [] }
 			},
 			type: 3
 		}));
@@ -23,6 +25,8 @@ export async function githubInfo(owner: string, repository: string, expression: 
 		return new Response(JSON.stringify({
 			data: {
 				content: `${FAIL_PREFIX} Invalid repository name: \`${repository}\`.`,
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				allowed_mentions: { parse: [] },
 				flags: 64
 			},
 			type: 3
