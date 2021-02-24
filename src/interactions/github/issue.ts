@@ -41,7 +41,6 @@ function buildQuery(owner: string, repository: string, issueID: string) {
 	return `
 		{
 			repository(owner: "${owner}", name: "${repository}") {
-				name
 				issueOrPullRequest(number: ${issueID}) {
 					... on PullRequest {
 						commits(last: 1) {
@@ -52,15 +51,10 @@ function buildQuery(owner: string, repository: string, issueID: string) {
 							}
 						}
 						author {
-							avatarUrl
 							login
 							url
 						}
-						body
 						merged
-						mergeCommit {
-							abbreviatedOid
-						}
 						headRef {
 							name
 						}
@@ -68,9 +62,6 @@ function buildQuery(owner: string, repository: string, issueID: string) {
 							nameWithOwner
 						}
 						mergedAt
-						mergedBy {
-							login
-						}
 						isDraft
 						number
 						publishedAt
@@ -78,27 +69,19 @@ function buildQuery(owner: string, repository: string, issueID: string) {
 						url
 						closed
 						closedAt
-						comments {
-							totalCount
-						}
 						reviewDecision
 					}
 					... on Issue {
 						author {
-							avatarUrl
 							login
 							url
 						}
-						body
 						number
 						publishedAt
 						title
 						url
 						closed
 						closedAt
-						comments {
-							totalCount
-						}
 					}
 				}
 			}
