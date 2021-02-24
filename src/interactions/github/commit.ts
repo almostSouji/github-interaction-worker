@@ -11,15 +11,12 @@ function buildQuery(owner: string, repository: string, expression: string) {
 					... on Commit {
 						messageHeadline
 						abbreviatedOid
-						changedFiles
 						commitUrl
 						pushedDate
 						author {
-							avatarUrl
 							name
 							user {
 								login
-								avatarUrl
 								url
 							}
 						}
