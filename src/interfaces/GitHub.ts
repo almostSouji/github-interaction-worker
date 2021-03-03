@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 export interface GitHubUser {
-	avatarUrl: string;
 	login: string;
 	url: string;
 }
 
 export interface GitActor {
-	avatarUrl?: string;
 	user?: GitHubUser;
 	name?: string;
 }
@@ -16,7 +14,6 @@ export interface GitHubCommit {
 	abbreviatedOid: string;
 	messageHeadline?: string;
 	author: GitActor;
-	changedFiles: number;
 	commitUrl?: string;
 	pushedDate?: string;
 }
@@ -37,14 +34,12 @@ export interface GitHubReview {
 
 export interface GitHubIssue {
 	author: GitHubUser;
-	body: string;
 	number: number;
 	publishedAt: string;
 	title: string;
 	url: string;
 	closed: boolean;
 	closedAt: string | null;
-	comments: { totalCount: number };
 }
 
 export enum GitHubReviewDecision {
@@ -60,10 +55,8 @@ export interface GitHubPRData {
 	headRef: { name: string } | null;
 	headRepository: { nameWithOwner: string };
 	mergedAt: string | null;
-	mergedBy: GitHubUser | null;
 	isDraft: boolean;
 	reviewDecision: GitHubReviewDecision | null;
-	latestOpinionatedReviews: { nodes: GitHubReview[] } | null;
 }
 
 export type GitHubPR = GitHubIssue & GitHubPRData;
@@ -77,7 +70,6 @@ export interface GitHubAPIErrorData {
 
 export interface GitHubAPIData {
 	repository?: {
-		name: string;
 		issueOrPullRequest?: GitHubIssue | GitHubPR | null;
 		object: GitHubCommit;
 	};
