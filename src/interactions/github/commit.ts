@@ -69,7 +69,7 @@ export async function commitInfo(owner: string, repository: string, expression: 
 		const commit = res.data.repository.object;
 		return new Response(JSON.stringify({
 			data: {
-				content: `> ${GITHUB_EMOJI_COMMIT} [\`${commit.abbreviatedOid}\`](<${commit.commitUrl ?? ''}>) *by [${commit.author.user?.login ?? commit.author.name ?? ''}](<${commit.author.user?.url ?? ''}>)* ${commit.pushedDate ? `committed at \`${DateTime.fromMillis(new Date(commit.pushedDate).getTime()).toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\`` : ''} \n> ${commit.messageHeadline ?? ''}`,
+				content: `${GITHUB_EMOJI_COMMIT} [\`${commit.abbreviatedOid}\`](<${commit.commitUrl ?? ''}>) *by [${commit.author.user?.login ?? commit.author.name ?? ''}](<${commit.author.user?.url ?? ''}>)* ${commit.pushedDate ? `committed at \`${DateTime.fromMillis(new Date(commit.pushedDate).getTime()).toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\`` : ''} \n${commit.messageHeadline ?? ''}`,
 				// eslint-disable-next-line @typescript-eslint/naming-convention
 				allowed_mentions: { parse: [] }
 			},

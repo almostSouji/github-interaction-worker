@@ -192,10 +192,10 @@ export async function issueInfo(owner: string, repository: string, expression: s
 					: '**(review required)**'
 			: '';
 
-		const parts = [`> ${emoji} [\`#${issue.number}\`](<${issue.url}>) *by [${issue.author.login}](<${issue.author.url}>)* ${timestampState} at \`${relevantTime.toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\` ${isPR(issue) ? decision : ''}`];
+		const parts = [`${emoji} [\`#${issue.number}\`](<${issue.url}>) *by [${issue.author.login}](<${issue.author.url}>)* ${timestampState} at \`${relevantTime.toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\` ${isPR(issue) ? decision : ''}`];
 		const installable = Reflect.has(InstallableState, resultState);
 
-		parts.push(`> ${issue.title}`);
+		parts.push(`${issue.title}`);
 
 		if (isPR(issue) && installable) {
 			parts.push(`\`📥\` \`npm i ${issue.headRepository.nameWithOwner}#${issue.headRef?.name ?? 'unknown'}\``);
