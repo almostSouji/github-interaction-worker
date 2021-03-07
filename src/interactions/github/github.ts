@@ -9,6 +9,14 @@ function validateGitHubName(name: string): boolean {
 }
 
 export async function githubInfo(owner: string, repository: string, expression: string): Promise<Response> {
+	const re = /(?:https?:\/\/github\.com)?\/?(.*?)\/(.*?)\/.*\/(\d*)/;
+	const res = re.exec(expression);
+	if (res) {
+		const [, o, r, q] = res;
+		owner = o;
+		repository = r;
+		expression = q;
+	}
 	if (!validateGitHubName(owner)) {
 		return new Response(JSON.stringify({
 			data: {

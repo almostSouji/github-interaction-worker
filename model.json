@@ -5,7 +5,7 @@
         "options": [
             {
                 "name": "query",
-                "description": "Issue, PR number or commit-like expression",
+                "description": "Issue, PR number, commit-like expression or direct link to a GitHub Issue or PR",
                 "type": 3,
                 "required": true
             },
