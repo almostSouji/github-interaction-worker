@@ -1,5 +1,5 @@
-export const DATE_FORMAT_WITH_SECONDS = 'yyyy/LL/dd HH:mm:ss';
-export const DATE_FORMAT_WITHOUT_SECONDS = 'yyyy/LL/dd HH:mm';
+export const DATE_FORMAT_WITH_SECONDS = 'yyyy/LL/dd HH:mm:ss ZZZZ';
+export const DATE_FORMAT_WITHOUT_SECONDS = 'yyyy/LL/dd HH:mm ZZZZ';
 export const DATE_FORMAT_DATE = 'yyyy/LL/dd';
 export const GITHUB_BASE_URL = 'https://api.github.com/graphql';
 export const GITHUB_EMOJI_PR_OPEN = '<:pr_open:803281518457913355>';
