@@ -9,6 +9,13 @@ Discord interaction for [cloudflare workers](https://developers.cloudflare.com/w
 
 Use [`wrangler secret`](https://developers.cloudflare.com/workers/cli-wrangler/commands#secret) to modify secrets for your worker.
 
+## Configuration (wrangler.toml)
+
+- `DEFAULT_REPO_OWNER` Repository owner name to default to, if none is provided.
+- `DEFAULT_REPO` Repository name to default to, if none is provided.
+
+Note: Make sure to also update this in the `model.json` field descriptions.
+
 ## Contributing
 
 If you wish to contribute, feel free to fork the repository and submit a pull request. I use [ESLint](https://eslint.org/) to enforce a consistent code style.
