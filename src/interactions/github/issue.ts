@@ -1,6 +1,6 @@
 
 import { DateTime } from 'luxon';
-import { DATE_FORMAT_WITHOUT_SECONDS, GITHUB_BASE_URL, GITHUB_EMOJI_ISSUE_CLOSED, GITHUB_EMOJI_ISSUE_OPEN, GITHUB_EMOJI_PR_CLOSED, GITHUB_EMOJI_PR_DRAFT, GITHUB_EMOJI_PR_MERGED, GITHUB_EMOJI_PR_OPEN, FAIL_PREFIX } from '../../Constants';
+import { GITHUB_BASE_URL, GITHUB_EMOJI_ISSUE_CLOSED, GITHUB_EMOJI_ISSUE_OPEN, GITHUB_EMOJI_PR_CLOSED, GITHUB_EMOJI_PR_DRAFT, GITHUB_EMOJI_PR_MERGED, GITHUB_EMOJI_PR_OPEN, FAIL_PREFIX } from '../../Constants';
 import { GitHubAPIResult, GitHubReviewDecision, isPR } from '../../interfaces/GitHub';
 
 declare let GITHUB_TOKEN: string;
@@ -58,6 +58,9 @@ function buildQuery(owner: string, repository: string, issueID: string) {
 						headRef {
 							name
 						}
+						repository {
+							nameWithOwner
+						}
 						headRepository {
 							nameWithOwner
 						}
@@ -75,6 +78,9 @@ function buildQuery(owner: string, repository: string, issueID: string) {
 						author {
 							login
 							url
+						}
+						repository {
+							nameWithOwner
 						}
 						number
 						publishedAt
@@ -175,7 +181,7 @@ export async function issueInfo(owner: string, repository: string, expression: s
 					: '**(review required)**'
 			: '';
 
-		const parts = [`${emoji} [\`#${issue.number}\`](<${issue.url}>) *by [${issue.author.login}](<${issue.author.url}>)* ${timestampState} at \`${relevantTime.toFormat(DATE_FORMAT_WITHOUT_SECONDS)}\` ${isPR(issue) ? decision : ''}`];
+		const parts = [`${emoji} [\`#${issue.number}\` in \`${issue.repository.nameWithOwner}\`](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} ${relevantTime.toRelative() as string} ${isPR(issue) ? decision : ''}`];
 		const installable = Reflect.has(InstallableState, resultState);
 
 		parts.push(`${issue.title}`);

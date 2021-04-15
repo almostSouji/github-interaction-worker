@@ -11,6 +11,7 @@ export interface GitActor {
 }
 
 export interface GitHubCommit {
+	repository: { nameWithOwner: string };
 	abbreviatedOid: string;
 	messageHeadline?: string;
 	author: GitActor;
@@ -33,6 +34,7 @@ export interface GitHubReview {
 }
 
 export interface GitHubIssue {
+	repository: { nameWithOwner: string };
 	author: GitHubUser;
 	number: number;
 	publishedAt: string;
