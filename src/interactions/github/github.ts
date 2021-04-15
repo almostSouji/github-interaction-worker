@@ -9,7 +9,7 @@ function validateGitHubName(name: string): boolean {
 }
 
 export async function githubInfo(owner: string, repository: string, expression: string): Promise<Response> {
-	const re = /(?:https?:\/\/github\.com)?\/?(.*?)\/(.*?)\/.*\/(\d*)/;
+	const re = /(?:https?:\/\/github\.com)?\/?(.*?)\/(.*?)\/.*?\/(.[a-zA-Z0-9]*)/;
 	const res = re.exec(expression);
 	if (res) {
 		const [, o, r, q] = res;
