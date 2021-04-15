@@ -2,6 +2,8 @@ import { verifyKey } from 'discord-interactions';
 import { githubInfo } from './interactions/github/github';
 
 declare let DISCORD_CLIENT_SECRET: string;
+declare let DEFAULT_REPO_OWNER: string;
+declare let DEFAULT_REPO: string;
 
 async function isValidRequest(request: Request): Promise<boolean> {
 	const signature = request.headers.get('x-signature-ed25519');
@@ -25,7 +27,7 @@ export async function handleRequest(request: Request): Promise<Response> {
 				const args = Object.fromEntries(options.map(({ name, value }: { name: string; value: any }) => [name, value]));
 
 				if (name === 'github') {
-					return githubInfo(args.owner ?? 'discordjs', args.repository ?? 'discord.js', args.query);
+					return githubInfo(args.owner ?? DEFAULT_REPO_OWNER, args.repository ?? DEFAULT_REPO, args.query);
 				}
 			}
 		}
