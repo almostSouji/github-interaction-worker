@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
-import { GITHUB_BASE_URL, GITHUB_EMOJI_COMMIT, FAIL_PREFIX } from '../../Constants';
+import { GITHUB_BASE_URL, GITHUB_EMOJI_COMMIT } from '../../Constants';
 import { GitHubAPIResult } from '../../interfaces/GitHub';
+import { respond, respondError } from '../../utils/respond';
 
 declare let GITHUB_TOKEN: string;
 function buildQuery(owner: string, repository: string, expression: string) {
@@ -43,47 +44,16 @@ export async function commitInfo(owner: string, repository: string, expression: 
 		}).then(res => res.json());
 
 		if (!res.data) {
-			return new Response(JSON.stringify({
-				data: {
-					content: `${FAIL_PREFIX} GitHub fetching unsuccessful. Arguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``,
-					flags: 64,
-					// eslint-disable-next-line @typescript-eslint/naming-convention
-					allowed_mentions: { parse: [] }
-				},
-				type: 3
-			}));
+			return respondError(`GitHub fetching unsuccessful. Arguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``);
 		}
 
 		if (res.errors?.some(e => e.type === 'NOT_FOUND') || !res.data.repository?.object) {
-			return new Response(JSON.stringify({
-				data: {
-					content: `${FAIL_PREFIX} Could not find commit \`${expression}\` on the repository \`${owner}/${repository}\`.`,
-					flags: 64,
-					// eslint-disable-next-line @typescript-eslint/naming-convention
-					allowed_mentions: { parse: [] }
-				},
-				type: 3
-			}));
+			return respondError(`Could not find commit \`${expression}\` on the repository \`${owner}/${repository}\`.`);
 		}
 
 		const commit = res.data.repository.object;
-		return new Response(JSON.stringify({
-			data: {
-				content: `${GITHUB_EMOJI_COMMIT} [\`${commit.abbreviatedOid}\` in \`${commit.repository.nameWithOwner}\`](<${commit.commitUrl ?? ''}>) by [${commit.author.user?.login ?? commit.author.name ?? ''}](<${commit.author.user?.url ?? ''}>) ${commit.pushedDate ? `committed ${DateTime.fromMillis(new Date(commit.pushedDate).getTime()).toRelative() as string}` : ''} \n${commit.messageHeadline ?? ''}`,
-				// eslint-disable-next-line @typescript-eslint/naming-convention
-				allowed_mentions: { parse: [] }
-			},
-			type: 4
-		}));
+		return respond(`${GITHUB_EMOJI_COMMIT} [\`${commit.abbreviatedOid}\` in \`${commit.repository.nameWithOwner}\`](<${commit.commitUrl ?? ''}>) by [${commit.author.user?.login ?? commit.author.name ?? ''}](<${commit.author.user?.url ?? ''}>) ${commit.pushedDate ? `committed ${DateTime.fromMillis(new Date(commit.pushedDate).getTime()).toRelative() as string}` : ''} \n${commit.messageHeadline ?? ''}`);
 	} catch (error) {
-		return new Response(JSON.stringify({
-			data: {
-				content: `${FAIL_PREFIX} Something went wrong :( Arguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``,
-				// eslint-disable-next-line @typescript-eslint/naming-convention
-				allowed_mentions: { parse: [] },
-				flags: 64
-			},
-			type: 3
-		}));
+		return respondError(`Something went wrong :( Arguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``);
 	}
 }

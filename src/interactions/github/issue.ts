@@ -1,7 +1,8 @@
 
 import { DateTime } from 'luxon';
-import { GITHUB_BASE_URL, GITHUB_EMOJI_ISSUE_CLOSED, GITHUB_EMOJI_ISSUE_OPEN, GITHUB_EMOJI_PR_CLOSED, GITHUB_EMOJI_PR_DRAFT, GITHUB_EMOJI_PR_MERGED, GITHUB_EMOJI_PR_OPEN, FAIL_PREFIX } from '../../Constants';
+import { GITHUB_BASE_URL, GITHUB_EMOJI_ISSUE_CLOSED, GITHUB_EMOJI_ISSUE_OPEN, GITHUB_EMOJI_PR_CLOSED, GITHUB_EMOJI_PR_DRAFT, GITHUB_EMOJI_PR_MERGED, GITHUB_EMOJI_PR_OPEN } from '../../Constants';
 import { GitHubAPIResult, GitHubReviewDecision, isPR } from '../../interfaces/GitHub';
+import { respond, respondError } from '../../utils/respond';
 
 declare let GITHUB_TOKEN: string;
 
@@ -110,28 +111,12 @@ export async function issueInfo(owner: string, repository: string, expression: s
 		}).then(res => res.json());
 
 		if (!res.data) {
-			return new Response(JSON.stringify({
-				data: {
-					content: `${FAIL_PREFIX} GitHub fetching unsuccessful.\nArguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``,
-					flags: 64,
-					// eslint-disable-next-line @typescript-eslint/naming-convention
-					allowed_mentions: { parse: [] }
-				},
-				type: 3
-			}));
+			return respondError(`GitHub fetching unsuccessful.\nArguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``);
 		}
 
 		const issue = res.data.repository?.issueOrPullRequest;
 		if (res.errors?.some(e => e.type === 'NOT_FOUND') || !issue) {
-			return new Response(JSON.stringify({
-				data: {
-					content: `${FAIL_PREFIX} Could not find issue or PR \`#${expression}\` on the repository \`${owner}/${repository}\`.`,
-					// eslint-disable-next-line @typescript-eslint/naming-convention
-					allowed_mentions: { parse: [] },
-					flags: 64
-				},
-				type: 3
-			}));
+			return respondError(`Could not find issue or PR \`#${expression}\` on the repository \`${owner}/${repository}\`.`);
 		}
 
 		const resultState = isPR(issue)
@@ -190,23 +175,8 @@ export async function issueInfo(owner: string, repository: string, expression: s
 			parts.push(`\`📥\` \`npm i ${issue.headRepository.nameWithOwner}#${issue.headRef?.name ?? 'unknown'}\``);
 		}
 
-		return new Response(JSON.stringify({
-			data: {
-				content: parts.join('\n'),
-				// eslint-disable-next-line @typescript-eslint/naming-convention
-				allowed_mentions: { parse: [] }
-			},
-			type: 4
-		}));
+		return respond(parts.join('\n'));
 	} catch (error) {
-		return new Response(JSON.stringify({
-			data: {
-				content: `${FAIL_PREFIX} Unable to fetch GitHub information, try again later!`,
-				flags: 64,
-				// eslint-disable-next-line @typescript-eslint/naming-convention
-				allowed_mentions: { parse: [] }
-			},
-			type: 3
-		}));
+		return respondError('Unable to fetch Github information, try again later!');
 	}
 }

@@ -1,5 +1,6 @@
 import { verifyKey } from 'discord-interactions';
 import { githubInfo } from './interactions/github/github';
+import { ack } from './utils/respond';
 
 declare let DISCORD_CLIENT_SECRET: string;
 declare let DEFAULT_REPO_OWNER: string;
@@ -36,10 +37,4 @@ export async function handleRequest(request: Request): Promise<Response> {
 	} catch (err) {
 		return ack();
 	}
-}
-
-function ack() {
-	return new Response(JSON.stringify({
-		type: 1
-	}), { status: 200 });
 }
