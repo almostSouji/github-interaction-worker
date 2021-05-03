@@ -52,7 +52,7 @@ export async function commitInfo(owner: string, repository: string, expression: 
 		}
 
 		const commit = res.data.repository.object;
-		return respond(`${GITHUB_EMOJI_COMMIT} [\`${commit.abbreviatedOid}\` in \`${commit.repository.nameWithOwner}\`](<${commit.commitUrl ?? ''}>) by [${commit.author.user?.login ?? commit.author.name ?? ''}](<${commit.author.user?.url ?? ''}>) ${commit.pushedDate ? `committed ${DateTime.fromMillis(new Date(commit.pushedDate).getTime()).toRelative() as string}` : ''} \n${commit.messageHeadline ?? ''}`);
+		return respond(`${GITHUB_EMOJI_COMMIT} [${commit.abbreviatedOid} in ${commit.repository.nameWithOwner}](<${commit.commitUrl ?? ''}>) by [${commit.author.user?.login ?? commit.author.name ?? ''}](<${commit.author.user?.url ?? ''}>) ${commit.pushedDate ? `committed ${DateTime.fromMillis(new Date(commit.pushedDate).getTime()).toRelative() as string}` : ''} \n${commit.messageHeadline ?? ''}`);
 	} catch (error) {
 		return respondError(`Something went wrong :( Arguments: \`owner: ${owner}\`, \`repository: ${repository}\`, \`expression: ${expression}\``);
 	}

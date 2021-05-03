@@ -166,7 +166,7 @@ export async function issueInfo(owner: string, repository: string, expression: s
 					: '**(review required)**'
 			: '';
 
-		const parts = [`${emoji} [\`#${issue.number}\` in \`${issue.repository.nameWithOwner}\`](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} ${relevantTime.toRelative() as string} ${isPR(issue) ? decision : ''}`];
+		const parts = [`${emoji} [#${issue.number} in ${issue.repository.nameWithOwner}](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} ${relevantTime.toRelative() as string} ${isPR(issue) ? decision : ''}`];
 		const installable = Reflect.has(InstallableState, resultState);
 
 		parts.push(`${issue.title}`);
