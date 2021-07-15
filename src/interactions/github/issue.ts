@@ -1,5 +1,4 @@
 
-import { DateTime } from 'luxon';
 import { GITHUB_BASE_URL, GITHUB_EMOJI_ISSUE_CLOSED, GITHUB_EMOJI_ISSUE_OPEN, GITHUB_EMOJI_PR_CLOSED, GITHUB_EMOJI_PR_DRAFT, GITHUB_EMOJI_PR_MERGED, GITHUB_EMOJI_PR_OPEN } from '../../Constants';
 import { GitHubAPIResult, GitHubReviewDecision, isPR } from '../../interfaces/GitHub';
 import { respond, respondError } from '../../utils/respond';
@@ -156,7 +155,7 @@ export async function issueInfo(owner: string, repository: string, expression: s
 				? 'opened'
 				: 'closed';
 
-		const relevantTime = DateTime.fromMillis(new Date(isPR(issue) ? issue[timestampProperty]! : issue[timestampProperty as TimestampsWithoutMergedKey]!).getTime());
+		const relevantTime = new Date(isPR(issue) ? issue[timestampProperty]! : issue[timestampProperty as TimestampsWithoutMergedKey]!).getTime();
 
 		const decision = isPR(issue) && !issue.merged && !issue.closed
 			? issue.reviewDecision === GitHubReviewDecision['CHANGES_REQUESTED']
@@ -166,7 +165,7 @@ export async function issueInfo(owner: string, repository: string, expression: s
 					: '**(review required)**'
 			: '';
 
-		const parts = [`${emoji} [#${issue.number} in ${issue.repository.nameWithOwner}](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} ${relevantTime.toRelative() as string} ${isPR(issue) ? decision : ''}`];
+		const parts = [`${emoji} [#${issue.number} in ${issue.repository.nameWithOwner}](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} <t:${Math.floor(relevantTime / 1000)}:R> ${isPR(issue) ? decision : ''}`];
 		const installable = Reflect.has(InstallableState, resultState);
 
 		parts.push(`${issue.title}`);
