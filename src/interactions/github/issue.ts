@@ -19,11 +19,6 @@ enum ResultStateIssue {
 	CLOSED = 'CLOSED',
 }
 
-enum InstallableState {
-	OPEN = 'OPEN',
-	DRAFT = 'DRAFT',
-}
-
 const Timestamps = {
 	OPEN: 'publishedAt',
 	CLOSED: 'closedAt',
@@ -165,14 +160,7 @@ export async function issueInfo(owner: string, repository: string, expression: s
 					: '**(review required)**'
 			: '';
 
-		const parts = [`${emoji} [#${issue.number} in ${issue.repository.nameWithOwner}](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} <t:${Math.floor(relevantTime / 1000)}:R> ${isPR(issue) ? decision : ''}`];
-		const installable = Reflect.has(InstallableState, resultState);
-
-		parts.push(`${issue.title}`);
-
-		if (isPR(issue) && installable) {
-			parts.push(`\`📥\` \`npm i ${issue.headRepository.nameWithOwner}#${issue.headRef?.name ?? 'unknown'}\``);
-		}
+		const parts = [`${emoji} [#${issue.number} in ${issue.repository.nameWithOwner}](<${issue.url}>) by [${issue.author.login}](<${issue.author.url}>) ${timestampState} <t:${Math.floor(relevantTime / 1000)}:R> ${isPR(issue) ? decision : ''}`, `${issue.title}`];
 
 		return respond(parts.join('\n'));
 	} catch (error) {
