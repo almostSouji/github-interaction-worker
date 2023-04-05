@@ -5,7 +5,7 @@ export function respond(content: string, ephemeral = false, mentions: string[] =
 		{
 			data: {
 				content,
-				flags: ephemeral ? 64 : 0,
+				flags: ephemeral ? ((1 << 2) | (1 << 6)) : (1 << 2),
 				// eslint-disable-next-line @typescript-eslint/naming-convention
 				allowed_mentions: { parse: mentions }
 			},
