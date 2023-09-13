@@ -1,7 +1,7 @@
 import { GITHUB_BASE_URL } from '../../Constants';
 import { GitHubAPISearchResult } from '../../interfaces/GitHub';
 import { autocompleteRespond } from '../../utils/respond';
-import { trucateWord, truncate } from '../../utils/util';
+import { truncateWord, truncate } from '../../utils/util';
 
 declare let GITHUB_TOKEN: string;
 function buildQuery(owner: string, repository: string, expression: string) {
@@ -51,7 +51,7 @@ export async function githubIssueAutocomplete(owner: string, repository: string,
 
 		const commits = res.data.search.edges;
 		return autocompleteRespond(commits.map(({ node: { number, title, url, author } }) => ({
-			name: `${truncate(title, 65)} #${number} by ${trucateWord(author.login, 20)}`,
+			name: `${truncate(title, 65)} #${number} by ${truncateWord(author.login, 20)}`,
 			value: url
 		})));
 	} catch (error) {

@@ -13,7 +13,7 @@ export function truncate(text: string, len: number, splitChar = ' '): string {
 	return resText.length === text.length ? resText : `${resText.trim()}...`;
 }
 
-export function trucateWord(text: string, len: number) {
+export function truncateWord(text: string, len: number) {
 	if (text.length <= len) return text;
 	return `${text.slice(0, len - 3)}...`;
 }
