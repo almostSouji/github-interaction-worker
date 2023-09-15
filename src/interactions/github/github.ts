@@ -1,22 +1,28 @@
-import { respondError } from '../../utils/respond';
-import { commitInfo } from './commit';
-import { issueInfo } from './issue';
+import { respondError } from '../../utils/respond.js';
+import { commitInfo } from './commit.js';
+import { issueInfo } from './issue.js';
 
 function validateGitHubName(name: string): boolean {
-	const reg = /[A-Za-z0-9_.-]+/;
+	const reg = /[\w.-]+/;
 	const match = reg.exec(name);
 	return name.length === match?.[0].length;
 }
 
-export async function githubInfo(owner: string, repository: string, expression: string): Promise<Response> {
-	const re = /(?:https?:\/\/github\.com)?\/?(.*?)\/(.*?)\/.*?\/(.[a-zA-Z0-9]*)/;
-	const res = re.exec(expression);
+export async function githubInfo(_owner: string, _repository: string, _expression: string): Promise<Response> {
+	const re = /(?:https?:\/\/github\.com)?\/?(.*?)\/(.*?)\/.*?\/(.[\dA-Za-z]*)/;
+	const res = re.exec(_expression);
+
+	let owner = _owner;
+	let repository = _repository;
+	let expression = _expression;
+
 	if (res) {
-		const [, o, r, q] = res;
-		owner = o;
-		repository = r;
-		expression = q;
+		const [, expressionOwner, expressionRepository, expressionQuery] = res;
+		owner = expressionOwner;
+		repository = expressionRepository;
+		expression = expressionQuery;
 	}
+
 	if (!validateGitHubName(owner)) {
 		return respondError(`Invalid repository owner name: \`${owner}\`.`);
 	}
@@ -25,8 +31,9 @@ export async function githubInfo(owner: string, repository: string, expression: 
 		return respondError(`Invalid repository name: \`${repository}\`.`);
 	}
 
-	if (isNaN(Number(expression))) {
+	if (Number.isNaN(Number(expression))) {
 		return commitInfo(owner, repository, expression);
 	}
+
 	return issueInfo(owner, repository, expression);
 }

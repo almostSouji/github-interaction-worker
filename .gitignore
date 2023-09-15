@@ -1,5 +1,18 @@
-dist
-node_modules
+# CF workers
+
 transpiled
 worker
 wrangler.toml
+
+# secrets
+.env
+
+# build flow
+dist/
+node_modules/
+
+# miscellaneous
+.DS_Store
+.yarn/*
+!.yarn/releases
+!.yarn/patches

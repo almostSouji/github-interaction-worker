@@ -6,4 +6,4 @@ export const GITHUB_EMOJI_PR_DRAFT = '<:pr_draft:852715368888008714>';
 export const GITHUB_EMOJI_ISSUE_OPEN = '<:issue_open:852714230280486942>';
 export const GITHUB_EMOJI_ISSUE_CLOSED = '<:issue_closed:852714146335555594>';
 export const GITHUB_EMOJI_COMMIT = '<:commit:852713964889702410>';
-export const FAIL_PREFIX = '\`❌ Error\`';
+export const FAIL_PREFIX = '`❌ Error`';

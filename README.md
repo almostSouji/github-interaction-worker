@@ -7,7 +7,7 @@ Discord interaction for [cloudflare workers](https://developers.cloudflare.com/w
 - `GITHUB_TOKEN` GitHub access token to make queries with
 - `DISCORD_CLIENT_SECRET` [Discord Application](https://discord.com/developers/applications) public key
 
-Use [`wrangler secret`](https://developers.cloudflare.com/workers/cli-wrangler/commands#secret) to modify secrets for your worker.
+Use [`wrangler secret SECRET_NAME`](https://developers.cloudflare.com/workers/cli-wrangler/commands#secret) to modify secrets for your worker.
 
 ## Configuration (wrangler.toml)
 
@@ -27,7 +27,19 @@ npm install
 
 Remember to always lint your work before making a commit to ensure everything is lined up and consistent with the rest of the codebase.
 
-Please test the application on your own CF worker before submitting a PR.
+## Testing changes
+
+Please test the application locally or on your own CF worker before submitting a PR.
+
+```
+yarn lint:fix
+yarn build
+npx wrangler deploy ./src/index.ts
+```
+
+## Deploying commands
+
+If you are changing the command model, you will need to [register the command(s)](https://discord.com/developers/docs/interactions/application-commands#registering-a-command) with an external tool (curl, postman, insomnia, thunder, etc.)
 
 ## Author
 

@@ -4,33 +4,31 @@
   "description": "CF Worker for a Discord interaction to query GitHub",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "dev": "NODE_ENV=development npm run build",
-    "format": "prettier --write '**/*.{ts,js,css,json,md}'",
-    "transpile": "tsc --project ./test"
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "dev": "NODE_ENV=development yarn build"
   },
   "author": "almostSouji",
-  "license": "",
+  "type": "module",
   "devDependencies": {
-    "@cloudflare/workers-types": "^2.0.0",
-    "@types/luxon": "^1.25.1",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
-    "@typescript-eslint/parser": "^4.14.1",
-    "eslint": "^7.18.0",
-    "eslint-config-marine": "^8.1.0",
-    "rimraf": "^3.0.2",
-    "service-worker-mock": "^2.0.5",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.5",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "@cloudflare/workers-types": "^4.20230914.0",
+    "@types/luxon": "^3.3.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.49.0",
+    "eslint-config-neon": "0.1.54",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "discord-api-types": "^0.37.56",
-    "discord-interactions": "^1.5.2",
-    "luxon": "^1.25.0"
+    "discord-verify": "^1.2.0",
+    "luxon": "^3.4.3"
   },
-  "eslintConfig": {
-    "extends": "marine/node"
-  }
+  "license": "MIT",
+  "packageManager": "yarn@3.6.3"
 }

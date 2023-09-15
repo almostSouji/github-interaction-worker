@@ -1,9 +1,5 @@
 name = "github-interaction"
-type = "webpack"
-account_id = ""
 workers_dev = true
-route = ""
-zone_id = ""
-webpack_config = "webpack.config.js"
+compatibility_date = "2023-09-15"
 
 vars = { DEFAULT_REPO_OWNER = "", DEFAULT_REPO = "" }
