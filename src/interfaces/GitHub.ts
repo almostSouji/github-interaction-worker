@@ -5,6 +5,10 @@ export interface GitHubUser {
 	url: string;
 }
 
+export interface GitHubUserWithoutURL {
+	login: string;
+}
+
 export interface GitActor {
 	user?: GitHubUser;
 	name?: string;
@@ -80,6 +84,26 @@ export interface GitHubAPIData {
 export interface GitHubAPIResult {
 	errors?: GitHubAPIErrorData[];
 	data?: GitHubAPIData;
+}
+
+export interface GitHubSearchIssueOrPR {
+	node: {
+		number: number;
+		title: string;
+		url: string;
+		author: GitHubUserWithoutURL;
+	};
+}
+
+export interface GitHubAPSearchIData {
+	search: {
+		edges: GitHubSearchIssueOrPR[];
+	};
+}
+
+export interface GitHubAPISearchResult {
+	errors: GitHubAPIErrorData[];
+	data?: GitHubAPSearchIData;
 }
 
 export function isPR(issue: GitHubIssue | GitHubPR): issue is GitHubPR {

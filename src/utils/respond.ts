@@ -1,4 +1,5 @@
 import { FAIL_PREFIX } from '../Constants';
+import { APIApplicationCommandOptionChoice, InteractionResponseType } from 'discord-api-types/v10';
 
 export function respond(content: string, ephemeral = false, mentions: string[] = []) {
 	const res = new Response(JSON.stringify(
@@ -9,7 +10,7 @@ export function respond(content: string, ephemeral = false, mentions: string[] =
 				// eslint-disable-next-line @typescript-eslint/naming-convention
 				allowed_mentions: { parse: mentions }
 			},
-			type: 4
+			type: InteractionResponseType.ChannelMessageWithSource
 		}
 	));
 	res.headers.set('Content-Type', 'application/json');
@@ -24,4 +25,17 @@ export function ack() {
 	return new Response(JSON.stringify({
 		type: 1
 	}), { status: 200 });
+}
+
+export function autocompleteRespond(choices: APIApplicationCommandOptionChoice[]) {
+	const res = new Response(JSON.stringify(
+		{
+			data: {
+				choices
+			},
+			type: InteractionResponseType.ApplicationCommandAutocompleteResult
+		}
+	));
+	res.headers.set('Content-Type', 'application/json');
+	return res;
 }

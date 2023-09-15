@@ -1,6 +1,8 @@
 import { verifyKey } from 'discord-interactions';
 import { githubInfo } from './interactions/github/github';
 import { ack } from './utils/respond';
+import { InteractionType } from 'discord-api-types/v10';
+import { githubIssueAutocomplete } from './interactions/github/autocomplete';
 
 declare let DISCORD_CLIENT_SECRET: string;
 declare let DEFAULT_REPO_OWNER: string;
@@ -22,8 +24,17 @@ export async function handleRequest(request: Request): Promise<Response> {
 
 		const body = await request.clone().json();
 		const { data: { name, options } } = body;
+		if (body.type === InteractionType.ApplicationCommandAutocomplete) {
+			if (options?.length) {
+				const args = Object.fromEntries(options.map(({ name, value }: { name: string; value: any }) => [name, value]));
 
-		if (body.type === 2) {
+				if (name === 'github') {
+					return githubIssueAutocomplete(args.owner ?? DEFAULT_REPO_OWNER, args.repository ?? DEFAULT_REPO, args.query);
+				}
+			}
+		}
+
+		if (body.type === InteractionType.ApplicationCommand) {
 			if (options?.length) {
 				const args = Object.fromEntries(options.map(({ name, value }: { name: string; value: any }) => [name, value]));
 
